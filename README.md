@@ -1,4 +1,4 @@
-# Quiz Patriote — Association CPE
+# Quizz CPE — Association CPE
 
 Quiz interactif temps réel (édition Barbecue) : une vue **participant** par défaut et une **console animateur** protégée par mot de passe. Plusieurs téléphones se connectent en direct ; l'animateur pilote la révélation des réponses et le passage à la question suivante.
 

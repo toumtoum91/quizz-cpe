@@ -1,5 +1,5 @@
 {
-  "title": "Quiz Patriote",
+  "title": "Quizz CPE",
   "subtitle": "Édition Barbecue — Association CPE",
   "website": "https://association-cpe.fr",
   "questions": [
@@ -9,7 +9,7 @@
       "question": "Avant de commencer… êtes-vous communiste ?",
       "options": ["OUI", "NON"],
       "answer_index": 1,
-      "explanation": "Bonne réponse ! Vous êtes officiellement habilité(e) à participer au Quiz Patriote. Les « OUI » sont priés d'aller s'occuper du charbon.",
+      "explanation": "Bonne réponse ! Vous êtes officiellement habilité(e) à participer au Quizz CPE. Les « OUI » sont priés d'aller s'occuper du charbon.",
       "category": "humour"
     },
     {

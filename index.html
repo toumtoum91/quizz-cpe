@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Quiz Patriote — Association CPE</title>
+<title>Quizz CPE — Association CPE</title>
 <style>
   :root{
     --bleu:#0b1f3a; --bleu-2:#13294b; --bleu-3:#1d3a66;
@@ -167,7 +167,7 @@
   <header>
     <div class="cocarde" aria-hidden="true"></div>
     <div class="brand">
-      <b id="brand-title">Quiz Patriote</b>
+      <b id="brand-title">Quizz CPE</b>
       <a href="https://association-cpe.fr" target="_blank" rel="noopener">association-cpe.fr</a>
     </div>
     <div class="spacer"></div>
@@ -195,11 +195,11 @@
   <!-- Données embarquées : repli si le fetch échoue (ouverture directe du fichier). -->
   <script type="application/json" id="fallback-data">
 {
-  "title": "Quiz Patriote",
+  "title": "Quizz CPE",
   "subtitle": "Édition Barbecue — Association CPE",
   "website": "https://association-cpe.fr",
   "questions": [
-    {"type":"qcm","gate":true,"question":"Avant de commencer… êtes-vous communiste ?","options":["OUI","NON"],"answer_index":1,"explanation":"Bonne réponse ! Vous êtes officiellement habilité(e) à participer au Quiz Patriote. Les « OUI » sont priés d'aller s'occuper du charbon.","category":"humour"},
+    {"type":"qcm","gate":true,"question":"Avant de commencer… êtes-vous communiste ?","options":["OUI","NON"],"answer_index":1,"explanation":"Bonne réponse ! Vous êtes officiellement habilité(e) à participer au Quizz CPE. Les « OUI » sont priés d'aller s'occuper du charbon.","category":"humour"},
     {"type":"qcm","question":"En quelle année la Première République française a-t-elle été proclamée ?","options":["1789","1792","1799","1804"],"answer_index":1,"explanation":"La Première République est proclamée le 22 septembre 1792 par la Convention nationale, au lendemain de la victoire de Valmy.","category":"serieux"},
     {"type":"qcm","question":"D'après une citation attribuée au général de Gaulle, combien la France compte-t-elle de variétés de fromage ?","options":["Beaucoup trop","246","365","Une par jour de l'année"],"answer_index":1,"explanation":"« Comment voulez-vous gouverner un pays où il existe 246 variétés de fromage ? » Le chiffre exact varie selon les versions de la citation (parfois 258, voire 365), mais 246 est la version la plus répandue.","category":"humour"},
     {"type":"qcm","question":"Que commémore la fête nationale du 14 juillet ?","options":["La prise de la Bastille (1789)","Le sacre de Napoléon","L'armistice de 1918","La libération de Paris"],"answer_index":0,"explanation":"Le 14 juillet célèbre la prise de la Bastille (1789) et la Fête de la Fédération (1790), symboles de la Révolution et de l'unité nationale.","category":"serieux"},
@@ -237,7 +237,7 @@
   /* ===================== CONFIGURATION ===================== */
   var SUPA_URL = "https://crsiwzquwyukafzcbchh.supabase.co";
   var SUPA_KEY = "sb_publishable_k2_jsZ5ZkIZ97Qe6QGyb9w_91r1x8JI";
-  var ROOM     = "quiz-patriote-cpe";        // nom de la salle (un seul quiz à la fois)
+  var ROOM     = "quizz-cpe";                // nom de la salle (un seul quiz à la fois)
   var ANIMATOR_PASSWORD = "marianne";        // ← mot de passe de la console animateur
   /* ========================================================= */
 
@@ -423,7 +423,7 @@
   function renderJoin(){
     hideFoot(); hideProg();
     mainCard(
-      '<div class="panel"><div class="cocarde"></div><h1>Quiz Patriote</h1>'+
+      '<div class="panel"><div class="cocarde"></div><h1>Quizz CPE</h1>'+
       '<p class="sub">Édition Barbecue — entrez votre nom pour rejoindre la partie.</p>'+
       '<div class="field"><label for="name">Votre prénom / pseudo</label>'+
       '<input id="name" maxlength="24" placeholder="ex. Jean-Mi" autocomplete="off"></div>'+
