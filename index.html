@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Quiz Patriote — Association CPE</title>
+<style>
+  :root{
+    --bleu:#0b1f3a; --bleu-2:#13294b; --bleu-3:#1d3a66;
+    --blanc:#f7f5ef; --blanc-2:#ffffff;
+    --rouge:#c8102e; --rouge-2:#e63946; --or:#d8a72b;
+    --txt:#0b1f3a; --muted:#5d6b82;
+    --ok:#1f8a4c; --ok-bg:#e4f4ea; --ko:#c8102e; --ko-bg:#fbe4e7;
+    --shadow:0 14px 40px rgba(11,31,58,.18); --radius:18px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    color:var(--txt);min-height:100dvh;display:flex;flex-direction:column;
+    background:
+      radial-gradient(1200px 600px at 15% -10%, rgba(200,16,46,.10), transparent 60%),
+      radial-gradient(1200px 600px at 85% 110%, rgba(11,31,58,.14), transparent 55%),
+      var(--blanc);
+  }
+  .liseré{height:7px;width:100%;display:flex;flex:0 0 auto}
+  .liseré i{flex:1}.liseré .b{background:var(--bleu)}.liseré .w{background:var(--blanc-2)}.liseré .r{background:var(--rouge)}
+
+  header{
+    flex:0 0 auto;display:flex;align-items:center;gap:14px;
+    padding:12px clamp(14px,4vw,40px);
+    background:rgba(247,245,239,.88);backdrop-filter:blur(6px);
+    border-bottom:1px solid rgba(11,31,58,.08);
+  }
+  .cocarde{width:34px;height:34px;border-radius:50%;flex:0 0 auto;
+    background:radial-gradient(circle, var(--bleu) 0 30%, var(--blanc-2) 30% 62%, var(--rouge) 62% 100%);
+    box-shadow:0 2px 8px rgba(11,31,58,.25);}
+  .brand{display:flex;flex-direction:column;line-height:1.05}
+  .brand b{font-size:clamp(15px,2.4vw,19px);letter-spacing:.3px}
+  .brand a{font-size:12px;color:var(--muted);text-decoration:none}
+  .brand a:hover{color:var(--rouge);text-decoration:underline}
+  .spacer{flex:1}
+  .who{display:flex;align-items:center;gap:10px;font-size:13px}
+  .pill{padding:6px 12px;border-radius:999px;font-weight:700;font-size:13px;white-space:nowrap}
+  .pill.role{background:var(--bleu);color:#fff}
+  .pill.host{background:var(--rouge);color:#fff}
+  .pill.score{background:#e9e6dc;color:var(--bleu)}
+  .conn{width:10px;height:10px;border-radius:50%;background:#c9a227;box-shadow:0 0 0 3px rgba(201,162,39,.2)}
+  .conn.on{background:var(--ok);box-shadow:0 0 0 3px rgba(31,138,76,.2)}
+  .conn.off{background:var(--ko);box-shadow:0 0 0 3px rgba(200,16,46,.2)}
+  .linkbtn{border:0;background:transparent;color:var(--muted);font:inherit;font-size:12px;cursor:pointer;text-decoration:underline}
+  .linkbtn:hover{color:var(--rouge)}
+
+  .progress-wrap{flex:0 0 auto;padding:10px clamp(14px,4vw,40px) 0}
+  .progress-top{display:flex;justify-content:space-between;align-items:flex-end;font-size:13px;color:var(--muted);margin-bottom:6px}
+  .progress-top .count{font-weight:700;color:var(--bleu)}
+  .bar{height:9px;border-radius:99px;background:#e3dfd4;overflow:hidden}
+  .bar > i{display:block;height:100%;width:0;border-radius:99px;
+    background:linear-gradient(90deg,var(--bleu),var(--bleu-3) 45%,var(--rouge));transition:width .35s ease}
+
+  main{flex:1 1 auto;display:flex;align-items:center;justify-content:center;padding:clamp(14px,3vw,32px);width:100%}
+  .card{width:min(960px,100%);background:var(--blanc-2);border-radius:var(--radius);box-shadow:var(--shadow);
+    border:1px solid rgba(11,31,58,.06);overflow:hidden;display:flex;flex-direction:column}
+  .card-top{height:6px;display:flex}.card-top i{flex:1}
+  .card-top .b{background:var(--bleu)}.card-top .w{background:#e9e6dc}.card-top .r{background:var(--rouge)}
+  .card-body{padding:clamp(20px,4vw,40px)}
+
+  .badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+  .badge{font-size:12px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:6px 12px;border-radius:999px;display:inline-flex;align-items:center;gap:6px}
+  .badge.serieux{background:#e7edf6;color:var(--bleu-3)}
+  .badge.humour{background:#fdeede;color:#b5751a}
+  .badge.charade{background:#efe7f6;color:#6b3fa0}
+  .badge.gate{background:#fbe4e7;color:var(--rouge)}
+  .badge.facile{background:var(--ok-bg);color:var(--ok)}
+  .badge.difficile{background:#fdeede;color:#b5751a}
+  .badge.tres_difficile{background:#fbe4e7;color:var(--rouge)}
+  .badge.libre{background:#eef0f2;color:var(--muted)}
+
+  .question{font-size:clamp(22px,3.6vw,38px);font-weight:800;line-height:1.18;letter-spacing:-.3px;color:var(--bleu);margin:0 0 22px}
+
+  .options{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .options.single{grid-template-columns:1fr}
+  @media (max-width:640px){.options{grid-template-columns:1fr}}
+  .opt{text-align:left;border:2px solid #e3dfd4;background:#fbfaf7;border-radius:14px;padding:clamp(14px,2.5vw,20px);
+    cursor:pointer;font:inherit;font-size:clamp(16px,2.2vw,21px);font-weight:600;color:var(--txt);
+    display:flex;align-items:center;gap:14px;transition:.15s;width:100%}
+  .opt:hover:not(:disabled){border-color:var(--bleu-3);transform:translateY(-1px)}
+  .opt:disabled{cursor:default}
+  .opt .letter{flex:0 0 auto;width:34px;height:34px;border-radius:9px;background:var(--bleu);color:#fff;display:grid;place-items:center;font-weight:800;font-size:16px}
+  .opt.correct{border-color:var(--ok);background:var(--ok-bg)}.opt.correct .letter{background:var(--ok)}
+  .opt.wrong{border-color:var(--ko);background:var(--ko-bg)}.opt.wrong .letter{background:var(--ko)}
+  .opt.picked{box-shadow:0 0 0 3px rgba(29,58,102,.18);border-color:var(--bleu-3)}
+  .opt .mark{margin-left:auto;font-weight:800;font-size:20px}
+
+  .clues{list-style:none;margin:0 0 6px;padding:0;display:flex;flex-direction:column;gap:12px}
+  .clues li{font-size:clamp(17px,2.5vw,24px);line-height:1.35;padding:14px 18px;border-radius:12px;background:#f4f1ea;border-left:5px solid var(--bleu-3)}
+  .clues li.def{border-left-color:var(--rouge);background:#fbf2f3;font-weight:700}
+
+  .reveal{margin-top:24px;border-radius:14px;padding:clamp(16px,3vw,24px);background:linear-gradient(180deg,#f4f7fb,#eef2f8);border:1px solid #d9e1ee;animation:pop .25s ease}
+  @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .reveal .lbl{font-size:12px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--muted)}
+  .reveal .sol{font-size:clamp(20px,3vw,30px);font-weight:800;color:var(--bleu);margin:4px 0 2px}
+  .reveal .decomp{font-size:clamp(15px,2vw,19px);color:var(--rouge);font-weight:700;margin-bottom:10px}
+  .reveal .expl{font-size:clamp(15px,2vw,18px);line-height:1.5;color:#36465f;margin:0}
+  .reveal.libre{background:linear-gradient(180deg,#fbf6ee,#f6efe2);border-color:#ecdcc1}
+
+  /* waiting banner (participant) */
+  .wait{margin-top:22px;border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:12px;font-weight:700;font-size:clamp(15px,2.2vw,19px)}
+  .wait.you{background:#eef4ff;border:1px solid #cfe0ff;color:var(--bleu-3)}
+  .wait.host{background:#fff6e6;border:1px solid #f0dca6;color:#a9761b}
+  .wait .dot{width:12px;height:12px;border-radius:50%;background:currentColor;animation:blink 1.1s infinite}
+  @keyframes blink{0%,100%{opacity:.25}50%{opacity:1}}
+
+  /* host stats */
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+  .stat{border-radius:14px;padding:14px 16px;background:#f4f1ea;border:1px solid #e7e2d6;text-align:center}
+  .stat .n{font-size:clamp(26px,5vw,40px);font-weight:800;color:var(--bleu);line-height:1}
+  .stat .l{font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:700;margin-top:4px}
+  .stat.answered .n{color:var(--rouge)}
+
+  .leaderboard{margin-top:20px;border-top:1px dashed #d9d4c6;padding-top:14px}
+  .leaderboard h4{margin:0 0 10px;font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+  .lb-row{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:9px}
+  .lb-row:nth-child(odd){background:#faf8f3}
+  .lb-row .rk{width:24px;font-weight:800;color:var(--muted)}
+  .lb-row .nm{flex:1;font-weight:600}
+  .lb-row .sc{font-weight:800;color:var(--rouge)}
+  .lb-empty{color:var(--muted);font-size:14px;padding:6px 2px}
+
+  footer{flex:0 0 auto;display:flex;align-items:center;gap:12px;padding:14px clamp(14px,4vw,40px);
+    background:rgba(247,245,239,.9);border-top:1px solid rgba(11,31,58,.08)}
+  .btn{border:0;cursor:pointer;font:inherit;font-weight:700;font-size:15px;border-radius:12px;padding:13px 22px;transition:.15s;display:inline-flex;align-items:center;gap:8px}
+  .btn:disabled{opacity:.4;cursor:default}
+  .btn.ghost{background:#e9e6dc;color:var(--bleu)}.btn.ghost:hover:not(:disabled){background:#ddd9cc}
+  .btn.primary{background:var(--rouge);color:#fff;box-shadow:0 6px 16px rgba(200,16,46,.3)}.btn.primary:hover:not(:disabled){background:var(--rouge-2)}
+  .btn.dark{background:var(--bleu);color:#fff}.btn.dark:hover:not(:disabled){background:var(--bleu-3)}
+  .btn.big{font-size:17px;padding:15px 26px}
+  .footer-mid{flex:1;text-align:center;font-size:13px;color:var(--muted)}
+
+  /* centered panels (join / login / lobby) */
+  .panel{width:min(560px,100%);text-align:center}
+  .panel .cocarde{width:60px;height:60px;margin:0 auto 16px}
+  .panel h1{font-size:clamp(26px,5vw,40px);margin:0 0 6px;color:var(--bleu)}
+  .panel p.sub{color:var(--muted);margin:0 0 24px;font-size:clamp(15px,2.3vw,18px)}
+  .field{display:flex;flex-direction:column;gap:8px;text-align:left;margin-bottom:16px}
+  .field label{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+  .field input{font:inherit;font-size:18px;padding:14px 16px;border-radius:12px;border:2px solid #e3dfd4;background:#fff;color:var(--txt)}
+  .field input:focus{outline:0;border-color:var(--bleu-3)}
+  .panel .err{color:var(--rouge);font-weight:700;font-size:14px;margin:-4px 0 14px;min-height:18px}
+  .qr{margin-top:18px;display:flex;flex-direction:column;align-items:center;gap:8px}
+  .qr img{width:160px;height:160px;border-radius:12px;border:6px solid #fff;box-shadow:var(--shadow);background:#fff}
+  .qr code{font-size:12px;color:var(--muted);word-break:break-all}
+
+  .end{text-align:center;padding:clamp(24px,5vw,56px)}
+  .end .cocarde{width:64px;height:64px;margin:0 auto 18px}
+  .end h2{font-size:clamp(26px,5vw,42px);margin:0 0 8px;color:var(--bleu)}
+  .end .scoreline{font-size:clamp(20px,3.5vw,30px);font-weight:800;color:var(--rouge);margin:6px 0 4px}
+  .end .grade{font-size:clamp(17px,2.5vw,22px);color:#36465f;margin:0 0 22px}
+
+  .hidden{display:none!important}
+  .loading{padding:60px;text-align:center;color:var(--muted);font-size:18px}
+</style>
+</head>
+<body>
+  <div class="liseré"><i class="b"></i><i class="w"></i><i class="r"></i></div>
+
+  <header>
+    <div class="cocarde" aria-hidden="true"></div>
+    <div class="brand">
+      <b id="brand-title">Quiz Patriote</b>
+      <a href="https://association-cpe.fr" target="_blank" rel="noopener">association-cpe.fr</a>
+    </div>
+    <div class="spacer"></div>
+    <div class="who" id="who"></div>
+  </header>
+
+  <div class="progress-wrap hidden" id="progress-wrap">
+    <div class="progress-top">
+      <span class="count" id="counter">—</span>
+      <span id="conn-label" style="font-size:12px"></span>
+    </div>
+    <div class="bar"><i id="bar-fill"></i></div>
+  </div>
+
+  <main id="main">
+    <div class="card"><div class="loading">Chargement…</div></div>
+  </main>
+
+  <footer class="hidden" id="footer">
+    <div id="foot-left"></div>
+    <div class="footer-mid" id="foot-mid"></div>
+    <div id="foot-right" style="display:flex;gap:12px"></div>
+  </footer>
+
+  <!-- Données embarquées : repli si le fetch échoue (ouverture directe du fichier). -->
+  <script type="application/json" id="fallback-data">
+{
+  "title": "Quiz Patriote",
+  "subtitle": "Édition Barbecue — Association CPE",
+  "website": "https://association-cpe.fr",
+  "questions": [
+    {"type":"qcm","gate":true,"question":"Avant de commencer… êtes-vous communiste ?","options":["OUI","NON"],"answer_index":1,"explanation":"Bonne réponse ! Vous êtes officiellement habilité(e) à participer au Quiz Patriote. Les « OUI » sont priés d'aller s'occuper du charbon.","category":"humour"},
+    {"type":"qcm","question":"En quelle année la Première République française a-t-elle été proclamée ?","options":["1789","1792","1799","1804"],"answer_index":1,"explanation":"La Première République est proclamée le 22 septembre 1792 par la Convention nationale, au lendemain de la victoire de Valmy.","category":"serieux"},
+    {"type":"qcm","question":"D'après une citation attribuée au général de Gaulle, combien la France compte-t-elle de variétés de fromage ?","options":["Beaucoup trop","246","365","Une par jour de l'année"],"answer_index":1,"explanation":"« Comment voulez-vous gouverner un pays où il existe 246 variétés de fromage ? » Le chiffre exact varie selon les versions de la citation (parfois 258, voire 365), mais 246 est la version la plus répandue.","category":"humour"},
+    {"type":"qcm","question":"Que commémore la fête nationale du 14 juillet ?","options":["La prise de la Bastille (1789)","Le sacre de Napoléon","L'armistice de 1918","La libération de Paris"],"answer_index":0,"explanation":"Le 14 juillet célèbre la prise de la Bastille (1789) et la Fête de la Fédération (1790), symboles de la Révolution et de l'unité nationale.","category":"serieux"},
+    {"type":"qcm","question":"Quel est le véritable sport national français, pratiqué quotidiennement ?","options":["La pétanque","Râler","Le Tour de France","La sieste d'après-déjeuner"],"answer_index":1,"explanation":"Râler : discipline olympique officieuse, accessible à tous, praticable en toutes circonstances et particulièrement à l'apéro.","category":"humour"},
+    {"type":"qcm","question":"Qui a composé le chant de La Marseillaise en 1792 ?","options":["Victor Hugo","Rouget de Lisle","Jean-Jacques Rousseau","Hector Berlioz"],"answer_index":1,"explanation":"Claude Joseph Rouget de Lisle compose le « Chant de guerre pour l'armée du Rhin » à Strasbourg en 1792. Repris par les fédérés marseillais, il devient La Marseillaise.","category":"serieux"},
+    {"type":"qcm","question":"À un barbecue patriote, qui détient le monopole des pinces et du feu ?","options":["Le plus jeune","Le maître du barbecue (auto-proclamé)","Un tirage au sort","Tout le monde à tour de rôle"],"answer_index":1,"explanation":"Le maître du barbecue : fonction non élective, non négociable et défendue avec une vigilance toute républicaine.","category":"humour"},
+    {"type":"qcm","question":"Combien de régions compte la France métropolitaine depuis la réforme de 2016 ?","options":["13","18","22","27"],"answer_index":0,"explanation":"Depuis le 1er janvier 2016, la France métropolitaine compte 13 régions (contre 22 auparavant), à la suite de la réforme territoriale.","category":"serieux"},
+    {"type":"qcm","question":"Quelle est la meilleure cuisson pour une saucisse au barbecue ?","options":["Pâle et triste","Dorée à point","Légèrement carbonisée (« c'est le goût »)","Réponse libre — à débattre à table"],"answer_index":3,"reponse_libre":true,"explanation":"Il n'existe aucune bonne réponse officielle : sujet de discorde nationale. L'animateur tranche… ou laisse la table se déchirer.","category":"humour"},
+    {"type":"qcm","question":"En quelle année a été adoptée la Déclaration des droits de l'homme et du citoyen ?","options":["1776","1789","1791","1804"],"answer_index":1,"explanation":"La Déclaration des droits de l'homme et du citoyen est adoptée le 26 août 1789 par l'Assemblée nationale constituante.","category":"serieux"},
+    {"type":"qcm","question":"Que répond traditionnellement un Français quand on lui demande « Ça va ? »","options":["« Très bien, merci ! »","« Bof, on fait aller »","« Ça pourrait être pire »","« Ne m'en parle pas »"],"answer_index":1,"explanation":"L'enthousiasme modéré est une marque de bon goût national. Répondre « très bien » éveille toujours un léger soupçon.","category":"humour"},
+    {"type":"qcm","question":"Pour quel événement la Tour Eiffel a-t-elle été construite ?","options":["L'Exposition universelle de 1889","Les Jeux olympiques de 1900","Le couronnement de Napoléon III","L'Exposition coloniale de 1931"],"answer_index":0,"explanation":"La Tour Eiffel est érigée pour l'Exposition universelle de 1889, qui célèbre le centenaire de la Révolution française.","category":"serieux"},
+    {"type":"qcm","question":"Quel animal est l'emblème officieux de la France ?","options":["L'aigle","Le coq gaulois","Le lion","Le sanglier"],"answer_index":1,"explanation":"Le coq gaulois : le seul qui continue de chanter les deux pieds dans le fumier. L'aigle, lui, était l'emblème de l'Empire napoléonien.","category":"humour"},
+    {"type":"qcm","question":"Qui fut le premier président de la Ve République ?","options":["Georges Pompidou","Vincent Auriol","Charles de Gaulle","René Coty"],"answer_index":2,"explanation":"Charles de Gaulle, élu en décembre 1958 et entré en fonction en janvier 1959. (Vincent Auriol et René Coty furent présidents sous la IVe République.)","category":"serieux"},
+    {"type":"qcm","question":"Le débat ultime : la chocolatine ou le pain au chocolat ?","options":["Pain au chocolat","Chocolatine","Les deux, ne nous fâchons pas","Réponse libre (et risquée)"],"answer_index":2,"reponse_libre":true,"explanation":"Question piège : aucune réponse ne fera l'unanimité à table. La paix civile recommande la neutralité diplomatique.","category":"humour"},
+    {"type":"qcm","question":"Quelle est la devise de la République française ?","options":["Dieu et mon droit","Liberté, Égalité, Fraternité","Un pour tous, tous pour un","Travail, Famille, Patrie"],"answer_index":1,"explanation":"« Liberté, Égalité, Fraternité », devise héritée de la Révolution. (« Travail, Famille, Patrie » était la devise du régime de Vichy.)","category":"serieux"},
+    {"type":"qcm","question":"Combien de temps un Français supporte-t-il une file d'attente avant de soupirer bruyamment ?","options":["10 secondes","Moins d'une minute","Cinq bonnes minutes","Il ne soupire jamais"],"answer_index":1,"explanation":"Le soupir en file d'attente est un réflexe patrimonial, transmis de génération en génération.","category":"humour"},
+    {"type":"qcm","question":"Quel est le plus long fleuve de France ?","options":["La Seine","La Garonne","Le Rhône","La Loire"],"answer_index":3,"explanation":"La Loire, avec environ 1 006 km, est le plus long fleuve traversant uniquement la France.","category":"serieux"},
+    {"type":"qcm","question":"Quel plat déclenche les disputes familiales les plus féroces ?","options":["La raclette en plein été","Les pâtes au beurre","La salade verte","Le pain de mie"],"answer_index":0,"explanation":"La raclette hors-saison divise les familles depuis des générations. La servir un 14 juillet relève du quasi-incident diplomatique.","category":"humour"},
+    {"type":"qcm","question":"Que représentent les trois couleurs du drapeau français ?","options":["Le bleu et le rouge de Paris, le blanc du roi","Les trois ordres : clergé, noblesse, tiers état","Trois grandes régions historiques","La terre, la mer et le ciel"],"answer_index":0,"explanation":"Le bleu et le rouge sont les couleurs de Paris, le blanc la couleur royale. Leur union (1789-1790) symbolise la réconciliation du peuple et de la monarchie de l'époque.","category":"serieux"},
+    {"type":"qcm","question":"Quel est le meilleur accompagnement pour l'apéro de la fête nationale ?","options":["Saucisson-cornichons","Chips et cacahuètes","Tapenade et olives","Réponse libre — vote à main levée"],"answer_index":3,"reponse_libre":true,"explanation":"Démocratie directe recommandée : chacun défend son camp, l'animateur organise le vote à main levée (et goûte pour vérifier).","category":"humour"},
+    {"type":"charade","clues":["Mon premier n'est pas un « oui », c'est une négation : « ne… pas ».","Mon deuxième se mange blanc et accompagne volontiers le poulet.","Mon tout est la capitale de la France."],"answer":"Paris","decomposition":"Pas + riz = Paris","difficulty":"facile","explanation":"« Pas » (la négation) + « riz » (la céréale) se prononcent comme « Paris ». La Ville Lumière, capitale depuis des siècles."},
+    {"type":"charade","clues":["Mon premier recouvre le matelas pour dormir au propre.","Mon deuxième recouvre tout ton corps de la tête aux pieds.","Mon tout est tricolore et flotte au fronton des mairies."],"answer":"Drapeau","decomposition":"Drap + peau = Drapeau","difficulty":"facile","explanation":"« Drap » + « peau » donne « drapeau ». L'emblème national bleu-blanc-rouge, fixé par la Révolution."},
+    {"type":"charade","clues":["Mon premier est l'époux : le mari d'une femme.","Mon deuxième est un prénom féminin, celui de la mère de la Vierge.","Mon tout est le buste qui orne les mairies, allégorie de la République."],"answer":"Marianne","decomposition":"Mari + Anne = Marianne","difficulty":"difficile","explanation":"« Mari » + « Anne » donne « Marianne », figure allégorique de la République française, présente dans toutes les mairies."},
+    {"type":"charade","clues":["Mon premier est l'animal emblème de la France, il chante au lever du jour.","Mon deuxième est l'outil à dents qui sert à peigner la laine.","Mon tout est l'insigne rond bleu-blanc-rouge porté les jours de fête."],"answer":"Cocarde","decomposition":"Coq + carde = Cocarde","difficulty":"difficile","explanation":"« Coq » + « carde » se prononce comme « cocarde ». La cocarde tricolore est née en juillet 1789, symbole rassembleur de la Révolution."},
+    {"type":"charade","clues":["Mon premier, c'est ce que tu fais la nuit en dormant.","Mon deuxième est une voyelle bien ronde.","Mon troisième est le participe passé du verbe « lire ».","Mon quatrième est une colline de Jérusalem (et un mouvement du XIXe siècle).","Mon tout, en 1789, a renversé la monarchie en France."],"answer":"Révolution","decomposition":"Rêve + o + lu + sion = Révolution","difficulty":"tres_difficile","explanation":"« Rêve » + « o » + « lu » + « sion » reconstitue « Révolution ». La Révolution française de 1789 a mis fin à l'Ancien Régime et fondé la République."}
+  ]
+}
+  </script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  "use strict";
+
+  /* ===================== CONFIGURATION ===================== */
+  var SUPA_URL = "https://crsiwzquwyukafzcbchh.supabase.co";
+  var SUPA_KEY = "sb_publishable_k2_jsZ5ZkIZ97Qe6QGyb9w_91r1x8JI";
+  var ROOM     = "quiz-patriote-cpe";        // nom de la salle (un seul quiz à la fois)
+  var ANIMATOR_PASSWORD = "marianne";        // ← mot de passe de la console animateur
+  /* ========================================================= */
+
+  var DIFF_LABEL = {facile:"Facile", difficile:"Difficile", tres_difficile:"Très difficile"};
+
+  // ---- état global ----
+  var ITEMS = [];
+  var view = "loading";            // loading | join | login | play | host | end
+  var role = null;                 // "player" | "host"
+  var connected = false;
+  var supa = null, channel = null;
+
+  function genId(){ var s=""; for(var i=0;i<16;i++) s+=Math.floor(Math.random()*36).toString(36); return "c-"+s; }
+  var clientId = genId();
+
+  var me = { id:clientId, name:"" };
+  // état de jeu : source de vérité = l'animateur, diffusé en broadcast
+  var gameState = { q:0, revealed:false, started:false, finished:false };
+
+  // côté joueur
+  var myAnswers = {};   // q -> index choisi
+  var myScored  = {};   // q -> déjà compté
+  var myScore   = 0;
+
+  // côté animateur
+  var answers = {};     // q -> { playerId: index }
+  var hostRevealed = {};// q -> bool (déjà révélé)
+
+  var membersCache = [];// présence (tous rôles)
+
+  // ---------- helpers données ----------
+  function realQuestions(){ return ITEMS.filter(function(q){return !q.gate;}); }
+  function isScorable(q){ return q && q.type==="qcm" && !q.reponse_libre && !q.gate; }
+  function players(){ return membersCache.filter(function(p){return p.role==="player";}); }
+  function hostOnline(){ return membersCache.some(function(p){return p.role==="host";}); }
+
+  // ---------- chargement données ----------
+  function loadData(){
+    fetch("quiz-data.json", {cache:"no-store"})
+      .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+      .then(boot)
+      .catch(function(){
+        try{ boot(JSON.parse(document.getElementById("fallback-data").textContent)); }
+        catch(e){ document.getElementById("main").innerHTML =
+          '<div class="card"><div class="loading">Impossible de charger les questions.</div></div>'; }
+      });
+  }
+  function boot(d){
+    ITEMS = d.questions || [];
+    if(d.title) document.getElementById("brand-title").textContent = d.title;
+    view = ((location.hash||"").toLowerCase().indexOf("anim") >= 0) ? "login" : "join";
+    connectRealtime();
+    render();
+  }
+
+  // ---------- Realtime (présence = présence/comptage ; broadcast = état + réponses) ----------
+  function connectRealtime(){
+    if(!window.supabase) return;
+    supa = window.supabase.createClient(SUPA_URL, SUPA_KEY, { realtime:{ params:{ eventsPerSecond:20 } } });
+    channel = supa.channel("room:"+ROOM, { config:{ presence:{ key:clientId }, broadcast:{ self:false } } });
+
+    channel.on("presence", { event:"sync" }, function(){
+      var st = channel.presenceState(), out = [];
+      Object.keys(st).forEach(function(k){ if(st[k] && st[k][0]) out.push(st[k][0]); });
+      membersCache = out;
+      render();
+    });
+    channel.on("broadcast", { event:"state" },  function(m){ onState(m.payload); });
+    channel.on("broadcast", { event:"answer" }, function(m){ onAnswer(m.payload); });
+    channel.on("broadcast", { event:"hello" },  function(){ if(role==="host") sendState(); });
+
+    channel.subscribe(function(status){
+      connected = (status === "SUBSCRIBED");
+      if(connected) announce();
+      render();
+    });
+  }
+
+  // déclare son identité de présence selon le rôle (track UNE fois, jamais muté ensuite)
+  function announce(){
+    if(!channel || !connected || !role) return;
+    if(role === "player"){
+      channel.track({ role:"player", id:me.id, name:me.name });
+      channel.send({ type:"broadcast", event:"hello", payload:{ id:me.id } }); // réclame l'état courant
+    }else if(role === "host"){
+      channel.track({ role:"host", id:me.id });
+      sendState();
+    }
+  }
+
+  function sendState(){
+    if(channel && connected) channel.send({ type:"broadcast", event:"state", payload:gameState });
+  }
+
+  // réception de l'état (joueurs)
+  function onState(s){
+    if(role !== "player" || !s) { return; }
+    gameState = s;
+    if(s.revealed){
+      var q = ITEMS[s.q];
+      if(isScorable(q) && !myScored[s.q]){
+        myScored[s.q] = true;
+        if(myAnswers[s.q] === q.answer_index) myScore += 1;
+      }
+    }
+    if(s.finished && view !== "end"){ view = "end"; }
+    render();
+  }
+
+  // réception d'une réponse (animateur)
+  function onAnswer(p){
+    if(role !== "host" || !p) return;
+    if(!answers[p.q]) answers[p.q] = {};
+    answers[p.q][p.id] = p.ans;
+    render();
+  }
+
+  // ---------- actions joueur ----------
+  function joinAsPlayer(name){
+    me.name = name; role = "player"; view = "play";
+    announce(); render();
+  }
+  function pick(i){
+    if(!gameState.started || gameState.finished || gameState.revealed) return;
+    myAnswers[gameState.q] = i;
+    if(channel && connected) channel.send({ type:"broadcast", event:"answer", payload:{ id:me.id, name:me.name, q:gameState.q, ans:i } });
+    render();
+  }
+
+  // ---------- actions animateur ----------
+  function hostLogin(pwd){
+    if(pwd !== ANIMATOR_PASSWORD) return false;
+    role = "host"; view = "host";
+    if(location.hash.toLowerCase().indexOf("anim") < 0){ try{ history.replaceState(null,"","#animateur"); }catch(e){} }
+    announce(); render(); return true;
+  }
+  function hostStart(){ gameState = {q:0,revealed:false,started:true,finished:false}; answers={}; hostRevealed={}; sendState(); render(); }
+  function hostReveal(){ gameState.revealed = true; hostRevealed[gameState.q] = true; sendState(); render(); }
+  function hostNext(){
+    if(gameState.q >= ITEMS.length-1){ gameState.finished = true; sendState(); render(); return; }
+    gameState.q += 1; gameState.revealed = false; sendState(); render();
+  }
+  function hostPrev(){ if(gameState.q>0){ gameState.q -= 1; gameState.revealed = false; sendState(); render(); } }
+  function hostRestart(){ hostStart(); }
+
+  // ---------- calculs animateur ----------
+  function answeredCount(q){ return answers[q] ? Object.keys(answers[q]).length : 0; }
+  function votesFor(q,i){ if(!answers[q]) return 0; var n=0; Object.keys(answers[q]).forEach(function(k){ if(answers[q][k]===i) n++; }); return n; }
+  function scoreOf(id){
+    var s=0;
+    Object.keys(hostRevealed).forEach(function(qk){
+      var qi = parseInt(qk,10), q = ITEMS[qi];
+      if(isScorable(q) && answers[qi] && answers[qi][id] === q.answer_index) s++;
+    });
+    return s;
+  }
+
+  /* ===================== RENDU ===================== */
+  function render(){
+    document.getElementById("who").innerHTML = whoBar();
+    if(view === "loading"){ mainCard('<div class="loading">Chargement…</div>'); hideFoot(); hideProg(); return; }
+    if(view === "join")  return renderJoin();
+    if(view === "login") return renderLogin();
+    if(view === "play")  return renderPlay();
+    if(view === "host")  return renderHost();
+    if(view === "end")   return renderEnd();
+  }
+  function mainCard(inner){ document.getElementById("main").innerHTML = card(inner); }
+  function hideFoot(){ document.getElementById("footer").classList.add("hidden"); }
+  function hideProg(){ document.getElementById("progress-wrap").classList.add("hidden"); }
+
+  function whoBar(){
+    var conn = '<span class="conn '+(connected?"on":"off")+'" title="'+(connected?"Connecté":"Hors-ligne")+'"></span>';
+    if(role === "host") return conn + '<span class="pill host">🎤 Animateur</span><button class="linkbtn" id="leave">Quitter</button>';
+    if(role === "player") return conn + '<span class="pill role">'+esc(me.name)+'</span><span class="pill score">⭐ '+myScore+'</span>';
+    return conn + '<button class="linkbtn" id="goto-anim">🎤 Espace animateur</button>';
+  }
+  function card(inner){
+    return '<div class="card"><div class="card-top"><i class="b"></i><i class="w"></i><i class="r"></i></div><div class="card-body">'+inner+'</div></div>';
+  }
+
+  // -------- rejoindre (participant) --------
+  function renderJoin(){
+    hideFoot(); hideProg();
+    mainCard(
+      '<div class="panel"><div class="cocarde"></div><h1>Quiz Patriote</h1>'+
+      '<p class="sub">Édition Barbecue — entrez votre nom pour rejoindre la partie.</p>'+
+      '<div class="field"><label for="name">Votre prénom / pseudo</label>'+
+      '<input id="name" maxlength="24" placeholder="ex. Jean-Mi" autocomplete="off"></div>'+
+      '<div class="err" id="join-err"></div>'+
+      '<button class="btn primary big" id="join" style="width:100%;justify-content:center">Rejoindre le quiz 🇫🇷</button>'+
+      '<p style="margin-top:18px;font-size:13px;color:var(--muted)">'+(connected?'Connecté à la salle ✓':'Connexion à la salle en cours…')+'</p></div>');
+    var input = document.getElementById("name"); input.focus();
+    function submit(){ var n=input.value.trim(); if(!n){ document.getElementById("join-err").textContent="Indiquez un nom pour participer."; return; } joinAsPlayer(n); }
+    document.getElementById("join").addEventListener("click", submit);
+    input.addEventListener("keydown", function(e){ if(e.key==="Enter") submit(); });
+    var g = document.getElementById("goto-anim"); if(g) g.addEventListener("click", function(){ view="login"; render(); });
+  }
+
+  // -------- connexion animateur --------
+  function renderLogin(){
+    hideFoot(); hideProg();
+    mainCard(
+      '<div class="panel"><div class="cocarde"></div><h1>Espace animateur</h1>'+
+      '<p class="sub">Accès réservé — saisissez le mot de passe.</p>'+
+      '<div class="field"><label for="pwd">Mot de passe</label>'+
+      '<input id="pwd" type="password" placeholder="••••••••" autocomplete="off"></div>'+
+      '<div class="err" id="login-err"></div>'+
+      '<button class="btn dark big" id="login" style="width:100%;justify-content:center">Ouvrir la console</button>'+
+      '<p style="margin-top:18px"><button class="linkbtn" id="back-join">← Revenir à la vue participant</button></p></div>');
+    var input = document.getElementById("pwd"); input.focus();
+    function submit(){ if(!hostLogin(input.value)){ document.getElementById("login-err").textContent="Mot de passe incorrect."; input.select(); } }
+    document.getElementById("login").addEventListener("click", submit);
+    input.addEventListener("keydown", function(e){ if(e.key==="Enter") submit(); });
+    document.getElementById("back-join").addEventListener("click", function(){ view="join"; try{history.replaceState(null,"",location.pathname);}catch(e){} render(); });
+  }
+
+  // -------- éléments de question --------
+  function badges(q){
+    var b='<div class="badges">';
+    if(q.gate){ b+='<span class="badge gate">★ Test de participation</span>'; }
+    else if(q.type==="charade"){ b+='<span class="badge charade">Charade</span>'; var d=q.difficulty||"facile"; b+='<span class="badge '+d+'">'+(DIFF_LABEL[d]||d)+'</span>'; }
+    else{ b+='<span class="badge '+(q.category||"serieux")+'">'+(q.category==="humour"?"😄 Humour":"🎓 Sérieux")+'</span>'; if(q.reponse_libre) b+='<span class="badge libre">Réponse libre</span>'; }
+    return b+'</div>';
+  }
+  function cluesHtml(q){ var c=q.clues||[],h='<ul class="clues">'; c.forEach(function(x,i){ h+='<li class="'+((i===c.length-1)?"def":"")+'">'+esc(x)+'</li>'; }); return h+'</ul>'; }
+  function revealBox(q){
+    var libre=(q.type==="qcm"&&q.reponse_libre), h='<div class="reveal'+(libre?" libre":"")+'">';
+    if(q.type==="charade"){ h+='<div class="lbl">Solution</div><div class="sol">'+esc(q.answer)+'</div>'; if(q.decomposition) h+='<div class="decomp">'+esc(q.decomposition)+'</div>'; }
+    else if(libre){ h+='<div class="lbl">Anti-sèche animateur</div><div class="sol">'+esc(q.options[q.answer_index])+'</div>'; }
+    else{ h+='<div class="lbl">Bonne réponse</div><div class="sol">'+esc(q.options[q.answer_index])+'</div>'; }
+    if(q.explanation) h+='<p class="expl">'+esc(q.explanation)+'</p>';
+    return h+'</div>';
+  }
+
+  // -------- vue PARTICIPANT --------
+  function renderPlay(){
+    hideFoot();
+    if(!gameState.started || !hostOnline() && !gameState.started){
+      // lobby tant que l'animateur n'a pas démarré
+    }
+    if(!gameState.started){
+      hideProg();
+      mainCard('<div class="panel"><div class="cocarde"></div><h1>Bienvenue, '+esc(me.name)+' !</h1>'+
+        '<p class="sub">Vous êtes bien dans la partie.<br>En attente de l\'animateur pour démarrer le quiz…</p>'+
+        '<div class="wait host" style="justify-content:center"><span class="dot"></span> En attente de l\'animateur…</div></div>');
+      return;
+    }
+    var q = ITEMS[gameState.q];
+    document.getElementById("progress-wrap").classList.remove("hidden");
+    updateProgress(gameState.q);
+
+    var inner = badges(q), myAns = myAnswers[gameState.q];
+    if(q.type === "charade"){
+      inner += cluesHtml(q);
+      inner += gameState.revealed ? revealBox(q)
+        : '<div class="wait host"><span class="dot"></span> Charade lue par l\'animateur — en attente de la solution…</div>';
+    }else{
+      inner += '<h1 class="question">'+esc(q.question)+'</h1>';
+      var two = (q.options||[]).length===2;
+      inner += '<div class="options'+(two?" single":"")+'">';
+      (q.options||[]).forEach(function(opt,i){
+        var cls="opt", mark="";
+        if(gameState.revealed && !q.reponse_libre){
+          if(i===q.answer_index){ cls+=" correct"; mark='<span class="mark">✓</span>'; }
+          else if(myAns===i){ cls+=" wrong"; mark='<span class="mark">✗</span>'; }
+        }
+        if(myAns===i) cls+=" picked";
+        var letter = two ? (i===0?"O":"N") : String.fromCharCode(65+i);
+        inner += '<button class="'+cls+'" data-i="'+i+'"'+(gameState.revealed?" disabled":"")+'><span class="letter">'+letter+'</span><span>'+esc(opt)+'</span>'+mark+'</button>';
+      });
+      inner += '</div>';
+      if(gameState.revealed) inner += revealBox(q);
+      else if(myAns == null) inner += '<div class="wait you"><span class="dot"></span> À vous de jouer — en attente de votre réponse.</div>';
+      else inner += '<div class="wait host"><span class="dot"></span> Réponse enregistrée — en attente de l\'animateur pour la révélation…</div>';
+    }
+    mainCard(inner);
+    if(q.type!=="charade" && !gameState.revealed){
+      Array.prototype.forEach.call(document.querySelectorAll(".opt"), function(b){
+        b.addEventListener("click", function(){ pick(parseInt(b.dataset.i,10)); });
+      });
+    }
+  }
+
+  // -------- vue ANIMATEUR --------
+  function renderHost(){
+    if(!gameState.started){
+      hideProg(); hideFoot();
+      var url = location.origin + location.pathname;
+      var qr = "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=" + encodeURIComponent(url);
+      mainCard('<div class="panel"><div class="cocarde"></div><h1>Salle ouverte</h1>'+
+        '<p class="sub">Les participants peuvent rejoindre. Lancez le quiz quand tout le monde est prêt.</p>'+
+        '<div class="stats" style="margin-bottom:20px"><div class="stat"><div class="n">'+players().length+'</div><div class="l">Participants connectés</div></div>'+
+        '<div class="stat"><div class="n">'+realQuestions().length+'</div><div class="l">Questions au programme</div></div></div>'+
+        '<button class="btn primary big" id="start" style="width:100%;justify-content:center">▶ Démarrer le quiz</button>'+
+        '<div class="qr"><img src="'+qr+'" alt="QR pour rejoindre"><code>'+esc(url)+'</code>'+
+        '<span style="font-size:12px;color:var(--muted)">Scannez ou partagez ce lien pour rejoindre</span></div></div>');
+      document.getElementById("start").addEventListener("click", hostStart);
+      return;
+    }
+
+    var q = ITEMS[gameState.q];
+    document.getElementById("progress-wrap").classList.remove("hidden");
+    updateProgress(gameState.q);
+
+    var pls = players(), active = pls.length, answered = answeredCount(gameState.q);
+    var answeredCell = (q.type==="charade")
+      ? '<div class="stat answered"><div class="n">—</div><div class="l">Pas de vote (charade)</div></div>'
+      : '<div class="stat answered"><div class="n">'+answered+' / '+active+'</div><div class="l">Ont répondu</div></div>';
+
+    var inner = '<div class="stats"><div class="stat"><div class="n">'+active+'</div><div class="l">Participants actifs</div></div>'+answeredCell+'</div>';
+    inner += badges(q);
+
+    if(q.type === "charade"){
+      inner += cluesHtml(q);
+    }else{
+      inner += '<h1 class="question">'+esc(q.question)+'</h1>';
+      var two = (q.options||[]).length===2;
+      inner += '<div class="options'+(two?" single":"")+'">';
+      (q.options||[]).forEach(function(opt,i){
+        var cls="opt", isAns=(i===q.answer_index)&&!q.reponse_libre;
+        if(gameState.revealed && isAns) cls+=" correct";
+        var votes = votesFor(gameState.q, i), mark = isAns ? '<span class="mark" title="Bonne réponse">✓</span>' : '';
+        var letter = two ? (i===0?"O":"N") : String.fromCharCode(65+i);
+        inner += '<div class="'+cls+'" style="cursor:default"><span class="letter">'+letter+'</span><span>'+esc(opt)+'</span>'+
+                 '<span style="margin-left:auto;display:flex;gap:8px;align-items:center"><span class="pill score" style="font-size:12px">'+votes+' vote'+(votes>1?"s":"")+'</span>'+mark+'</span></div>';
+      });
+      inner += '</div>';
+      if(!gameState.revealed && !q.reponse_libre) inner += '<p style="margin-top:14px;font-size:13px;color:var(--muted)">✓ = bonne réponse (visible par vous seul·e). Cliquez « Révéler » pour l\'afficher à tous.</p>';
+    }
+    if(gameState.revealed) inner += revealBox(q);
+    inner += '<div class="leaderboard"><h4>Classement</h4>'+leaderboardHtml(pls)+'</div>';
+    mainCard(inner);
+
+    var foot = document.getElementById("footer"); foot.classList.remove("hidden");
+    var last = (gameState.q >= ITEMS.length-1);
+    document.getElementById("foot-left").innerHTML = '<button class="btn ghost" id="h-prev"'+(gameState.q===0?" disabled":"")+'>‹ Précédent</button>';
+    document.getElementById("foot-mid").innerHTML = (q.type==="charade"?'Charade':(answered+' / '+active+' réponse'+(answered>1?"s":"")))+(gameState.revealed?' · réponse révélée ✓':'');
+    document.getElementById("foot-right").innerHTML = '<button class="btn dark" id="h-reveal"'+(gameState.revealed?" disabled":"")+'>👁 Révéler la réponse</button>'+
+      '<button class="btn primary" id="h-next">'+(last?"Terminer 🏁":"Question suivante ›")+'</button>';
+    document.getElementById("h-prev").addEventListener("click", hostPrev);
+    document.getElementById("h-reveal").addEventListener("click", hostReveal);
+    document.getElementById("h-next").addEventListener("click", hostNext);
+  }
+
+  function leaderboardHtml(pls){
+    if(!pls.length) return '<div class="lb-empty">Aucun participant connecté pour le moment.</div>';
+    var rows = pls.map(function(p){ return { name:p.name, score:scoreOf(p.id) }; })
+                  .sort(function(a,b){ return b.score-a.score; });
+    return rows.slice(0,12).map(function(r,i){
+      return '<div class="lb-row"><span class="rk">'+(i+1)+'</span><span class="nm">'+esc(r.name||"—")+'</span><span class="sc">'+r.score+'</span></div>';
+    }).join("");
+  }
+
+  // -------- écran de fin --------
+  function renderEnd(){
+    document.getElementById("progress-wrap").classList.remove("hidden");
+    document.getElementById("bar-fill").style.width = "100%";
+    document.getElementById("counter").textContent = "Terminé";
+    document.getElementById("conn-label").textContent = "";
+
+    if(role === "host"){
+      var foot = document.getElementById("footer"); foot.classList.remove("hidden");
+      document.getElementById("foot-left").innerHTML = '';
+      document.getElementById("foot-mid").innerHTML = 'Quiz terminé';
+      document.getElementById("foot-right").innerHTML = '<button class="btn primary" id="h-restart">Rejouer 🔄</button>';
+      mainCard('<div class="end"><div class="cocarde"></div><h2>Quiz terminé !</h2><p class="grade">Voici le classement final 🇫🇷</p>'+
+        '<div class="leaderboard" style="text-align:left;max-width:480px;margin:0 auto"><h4>Podium &amp; classement</h4>'+leaderboardHtml(players())+'</div></div>');
+      document.getElementById("h-restart").addEventListener("click", hostRestart);
+      return;
+    }
+    hideFoot();
+    var total = realQuestions().filter(isScorable).length;
+    var ratio = total ? myScore/total : 0;
+    mainCard('<div class="end"><div class="cocarde"></div><h2>Merci '+esc(me.name)+' !</h2>'+
+      '<div class="scoreline">'+myScore+' / '+total+' bonnes réponses</div>'+
+      '<p class="grade">'+grade(ratio)+'</p>'+
+      '<p style="color:var(--muted);font-size:14px;max-width:520px;margin:14px auto 0">Charades et questions à réponse libre ne comptent pas dans le score.</p></div>');
+  }
+
+  function grade(r){
+    if(r>=.9) return "🇫🇷 Patriote émérite — la Marseillaise se lève sur votre passage !";
+    if(r>=.7) return "🥖 Beau parcours — digne d'un dimanche au marché.";
+    if(r>=.5) return "🧀 Honorable — un petit fromage de plus et c'était parfait.";
+    if(r>=.3) return "🤷 Mi-figue mi-raisin — réviser à l'apéro est conseillé.";
+    return "🚧 Au charbon avec les « OUI » du début !";
+  }
+
+  function updateProgress(qi){
+    var q = ITEMS[qi], reals = realQuestions(), counter = document.getElementById("counter");
+    counter.textContent = (q && q.gate) ? "Question test — participation" : ("Question "+(reals.indexOf(q)+1)+" / "+reals.length);
+    var pct = ITEMS.length>1 ? (qi/(ITEMS.length-1))*100 : 0;
+    document.getElementById("bar-fill").style.width = pct+"%";
+    var cl = document.getElementById("conn-label");
+    cl.textContent = connected ? "● en direct" : "○ reconnexion…";
+    cl.style.color = connected ? "var(--ok)" : "var(--rouge)";
+  }
+
+  document.addEventListener("click", function(e){
+    if(e.target && e.target.id === "leave"){
+      if(channel) channel.untrack();
+      role = null; view = "join"; try{history.replaceState(null,"",location.pathname);}catch(_){}
+      render();
+    }
+  });
+
+  function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+  loadData();
+})();
+</script>
+</body>
+</html>
