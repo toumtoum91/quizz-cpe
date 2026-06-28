@@ -224,7 +224,7 @@
     {"type":"qcm","question":"Quel célèbre peintre, dont la maison se visite dans notre département, a peint le tableau utilisé comme illustration dans notre tract ?","options":["Gustave Caillebotte","Édouard Manet","Tsugouharu Foujita","Léonard de Vinci"],"answer_index":0,"explanation":"Gustave Caillebotte (Propriété Caillebotte à Yerres). À confirmer selon le tableau du tract : Foujita a aussi une maison-atelier visitable en Essonne (Villiers-le-Bâcle) ; si l'œuvre est de Foujita, la bonne réponse devient C.","category":"serieux"},
     {"type":"qcm","question":"Dans quelle ville Claude François a-t-il établi sa résidence familiale ?","options":["Yerres","Dannemois","Le Plessis-Pâté","Chamarande"],"answer_index":1,"explanation":"Dannemois (le Moulin de Dannemois, en Essonne).","category":"humour"},
     {"type":"qcm","question":"Selon le grand livre de cuisine d'Auguste Escoffier, combien de kg de jarret de veau faut-il pour obtenir 4 litres de fond brun ?","options":["2","4","8","16"],"answer_index":0,"explanation":"Environ 2 kg. Escoffier indique 6 kg de jarret de veau pour 10 litres de fond brun, soit ~2,4 kg pour 4 litres → arrondi à 2.","category":"serieux"},
-    {"type":"qcm","question":"Quel saint est le saint patron de la France ?","options":["Saint Michel","Saint Christophe","Saint Denis","Sainte Jeanne d'Arc"],"answer_index":0,"explanation":"Sujet à débat. Réponse « patriote » la plus courante : Saint Michel, protecteur historique de la France (Mont-Saint-Michel, voix de Jeanne d'Arc). Réponse « manuel » classique : Saint Denis, premier évêque de Paris. Officiellement, la patronne principale est la Vierge Marie (vœu de Louis XIII, 1638), Jeanne d'Arc étant patronne secondaire.","category":"serieux"},
+    {"type":"qcm","question":"Quel saint est le saint patron de la France ?","options":["Saint Michel","Saint Christophe","Saint Denis","Sainte Jeanne d'Arc"],"answer_index":2,"answer_indices":[2,3],"explanation":"Deux réponses acceptées : Saint Denis (premier évêque de Paris, traditionnellement « patron de la France ») et Sainte Jeanne d'Arc (patronne secondaire de la France, fête nationale du 2e dimanche de mai). À noter : Saint Michel est souvent cité comme protecteur historique, et la patronne principale est officiellement la Vierge Marie (vœu de Louis XIII, 1638).","category":"serieux"},
     {"type":"qcm","question":"Quelle est la musique d'introduction du Festival de Cannes (et la musique d'attente de la hotline CPE) ?","options":["Les Quatre Saisons, Vivaldi","Aquarium, Camille Saint-Saëns","La Mer, Debussy","Clair de lune, Chopin"],"answer_index":1,"explanation":"Aquarium, de Camille Saint-Saëns (Le Carnaval des animaux). Générique du Festival de Cannes depuis 1990.","category":"serieux"},
     {"type":"qcm","question":"Quel est le premier président de la IIIe République ?","options":["Adolphe Thiers","Félix Faure","Patrice de Mac-Mahon","Raymond Poincaré"],"answer_index":0,"explanation":"Adolphe Thiers (1871). Mac-Mahon ne fut que le deuxième : c'est le piège.","category":"serieux"},
     {"type":"qcm","question":"Quel est le dernier Français à avoir gagné le Tour de France ?","options":["Eddy Merckx","Raymond Poulidor","Bernard Hinault","Thomas Voeckler"],"answer_index":2,"explanation":"Bernard Hinault (1985), toujours le dernier vainqueur français à ce jour.","category":"serieux"},
@@ -276,6 +276,9 @@
   // ---------- helpers données ----------
   function realQuestions(){ return ITEMS.filter(function(q){return !q.gate;}); }
   function isScorable(q){ return q && q.type==="qcm" && !q.reponse_libre && !q.gate; }
+  // indices de bonne(s) réponse(s) : supporte answer_indices (réponses multiples) ou answer_index
+  function correctIdx(q){ return Array.isArray(q.answer_indices) ? q.answer_indices : [q.answer_index]; }
+  function isCorrect(q,i){ return i != null && correctIdx(q).indexOf(i) !== -1; }
   function players(){ return membersCache.filter(function(p){return p.role==="player";}); }
   function hostOnline(){ return membersCache.some(function(p){return p.role==="host";}); }
 
@@ -345,7 +348,7 @@
       var q = ITEMS[s.q];
       if(isScorable(q) && !myScored[s.q]){
         myScored[s.q] = true;
-        if(myAnswers[s.q] === q.answer_index) myScore += 1;
+        if(isCorrect(q, myAnswers[s.q])) myScore += 1;
       }
     }
     if(s.finished && view !== "end"){ view = "end"; }
@@ -395,7 +398,7 @@
     var s=0;
     Object.keys(hostRevealed).forEach(function(qk){
       var qi = parseInt(qk,10), q = ITEMS[qi];
-      if(isScorable(q) && answers[qi] && answers[qi][id] === q.answer_index) s++;
+      if(isScorable(q) && answers[qi] && isCorrect(q, answers[qi][id])) s++;
     });
     return s;
   }
@@ -473,7 +476,7 @@
     var libre=(q.type==="qcm"&&q.reponse_libre), h='<div class="reveal'+(libre?" libre":"")+'">';
     if(q.type==="charade"){ h+='<div class="lbl">Solution</div><div class="sol">'+esc(q.answer)+'</div>'; if(q.decomposition) h+='<div class="decomp">'+esc(q.decomposition)+'</div>'; }
     else if(libre){ h+='<div class="lbl">Anti-sèche animateur</div><div class="sol">'+esc(q.options[q.answer_index])+'</div>'; }
-    else{ h+='<div class="lbl">Bonne réponse</div><div class="sol">'+esc(q.options[q.answer_index])+'</div>'; }
+    else{ var sols=correctIdx(q).map(function(ci){return q.options[ci];}).join(" / "); h+='<div class="lbl">'+(correctIdx(q).length>1?"Bonnes réponses":"Bonne réponse")+'</div><div class="sol">'+esc(sols)+'</div>'; }
     if(q.explanation) h+='<p class="expl">'+esc(q.explanation)+'</p>';
     return h+'</div>';
   }
@@ -507,7 +510,7 @@
       (q.options||[]).forEach(function(opt,i){
         var cls="opt", mark="";
         if(gameState.revealed && !q.reponse_libre){
-          if(i===q.answer_index){ cls+=" correct"; mark='<span class="mark">✓</span>'; }
+          if(isCorrect(q,i)){ cls+=" correct"; mark='<span class="mark">✓</span>'; }
           else if(myAns===i){ cls+=" wrong"; mark='<span class="mark">✗</span>'; }
         }
         if(myAns===i) cls+=" picked";
@@ -563,7 +566,7 @@
       var two = (q.options||[]).length===2;
       inner += '<div class="options'+(two?" single":"")+'">';
       (q.options||[]).forEach(function(opt,i){
-        var cls="opt", isAns=(i===q.answer_index)&&!q.reponse_libre;
+        var cls="opt", isAns=isCorrect(q,i)&&!q.reponse_libre;
         if(gameState.revealed && isAns) cls+=" correct";
         var votes = votesFor(gameState.q, i), mark = isAns ? '<span class="mark" title="Bonne réponse">✓</span>' : '';
         var letter = two ? (i===0?"O":"N") : String.fromCharCode(65+i);
