@@ -167,6 +167,13 @@
   .end .grade{font-size:clamp(17px,2.5vw,22px);color:#36465f;margin:0 0 22px}
 
   .hidden{display:none!important}
+
+  /* Fenêtre QR (réaffichage de l'accès) */
+  .modal-bg{position:fixed;inset:0;z-index:50;background:rgba(11,31,58,.55);display:flex;align-items:center;justify-content:center;padding:20px;animation:pop .2s ease}
+  .modal{background:#fff;border-radius:18px;padding:24px;max-width:340px;width:100%;text-align:center;box-shadow:var(--shadow)}
+  .modal h3{margin:0 0 14px;color:var(--bleu);font-size:20px}
+  .modal img{width:240px;height:240px;max-width:100%;border:8px solid #fff;border-radius:12px;background:#fff}
+  .modal code{display:block;font-size:12px;color:var(--muted);word-break:break-all;margin:10px 0 4px}
   .loading{padding:60px;text-align:center;color:var(--muted);font-size:18px}
 </style>
 </head>
@@ -557,6 +564,7 @@
       : '<div class="stat answered"><div class="n">'+answered+' / '+active+'</div><div class="l">Ont répondu</div></div>';
 
     var inner = '<div class="stats"><div class="stat"><div class="n">'+active+'</div><div class="l">Participants actifs</div></div>'+answeredCell+'</div>';
+    if(gameState.q === 0) inner += '<button class="btn ghost" id="show-qr" style="width:100%;justify-content:center;margin-bottom:18px">📱 Afficher le QR code d\'accès</button>';
     inner += badges(q);
 
     if(q.type === "charade"){
@@ -589,7 +597,24 @@
     document.getElementById("h-prev").addEventListener("click", hostPrev);
     document.getElementById("h-reveal").addEventListener("click", hostReveal);
     document.getElementById("h-next").addEventListener("click", hostNext);
+    var sq = document.getElementById("show-qr"); if(sq) sq.addEventListener("click", openQrModal);
   }
+
+  // fenêtre QR (réaffichage du lien d'accès depuis la console animateur)
+  function openQrModal(){
+    closeQrModal();
+    var url = location.origin + location.pathname;
+    var qr = "https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=" + encodeURIComponent(url);
+    var d = document.createElement("div");
+    d.className = "modal-bg"; d.id = "qr-modal";
+    d.innerHTML = '<div class="modal"><h3>Rejoindre le quiz</h3>'+
+      '<img src="'+qr+'" alt="QR code d\'accès"><code>'+esc(url)+'</code>'+
+      '<span style="font-size:12px;color:var(--muted);display:block;margin-bottom:14px">Scannez ou partagez ce lien pour rejoindre</span>'+
+      '<button class="btn dark" id="qr-close" style="width:100%;justify-content:center">Fermer</button></div>';
+    document.body.appendChild(d);
+    d.addEventListener("click", function(e){ if(e.target === d || e.target.id === "qr-close") closeQrModal(); });
+  }
+  function closeQrModal(){ var m = document.getElementById("qr-modal"); if(m) m.remove(); }
 
   function leaderboardHtml(pls){
     if(!pls.length) return '<div class="lb-empty">Aucun participant connecté pour le moment.</div>';
