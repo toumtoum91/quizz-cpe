@@ -3,239 +3,27 @@
   "subtitle": "Édition Barbecue — Association CPE",
   "website": "https://association-cpe.fr",
   "questions": [
-    {
-      "type": "qcm",
-      "gate": true,
-      "question": "Avant de commencer… êtes-vous communiste ?",
-      "options": ["OUI", "NON"],
-      "answer_index": 1,
-      "explanation": "Bonne réponse ! Vous êtes officiellement habilité(e) à participer au Quizz CPE. Les « OUI » sont priés d'aller s'occuper du charbon.",
-      "category": "humour"
-    },
-    {
-      "type": "qcm",
-      "question": "En quelle année la Première République française a-t-elle été proclamée ?",
-      "options": ["1789", "1792", "1799", "1804"],
-      "answer_index": 1,
-      "explanation": "La Première République est proclamée le 22 septembre 1792 par la Convention nationale, au lendemain de la victoire de Valmy.",
-      "category": "serieux"
-    },
-    {
-      "type": "qcm",
-      "question": "D'après une citation attribuée au général de Gaulle, combien la France compte-t-elle de variétés de fromage ?",
-      "options": ["Beaucoup trop", "246", "365", "Une par jour de l'année"],
-      "answer_index": 1,
-      "explanation": "« Comment voulez-vous gouverner un pays où il existe 246 variétés de fromage ? » Le chiffre exact varie selon les versions de la citation (parfois 258, voire 365), mais 246 est la version la plus répandue.",
-      "category": "humour"
-    },
-    {
-      "type": "qcm",
-      "question": "Que commémore la fête nationale du 14 juillet ?",
-      "options": ["La prise de la Bastille (1789)", "Le sacre de Napoléon", "L'armistice de 1918", "La libération de Paris"],
-      "answer_index": 0,
-      "explanation": "Le 14 juillet célèbre la prise de la Bastille (1789) et la Fête de la Fédération (1790), symboles de la Révolution et de l'unité nationale.",
-      "category": "serieux"
-    },
-    {
-      "type": "qcm",
-      "question": "Quel est le véritable sport national français, pratiqué quotidiennement ?",
-      "options": ["La pétanque", "Râler", "Le Tour de France", "La sieste d'après-déjeuner"],
-      "answer_index": 1,
-      "explanation": "Râler : discipline olympique officieuse, accessible à tous, praticable en toutes circonstances et particulièrement à l'apéro.",
-      "category": "humour"
-    },
-    {
-      "type": "qcm",
-      "question": "Qui a composé le chant de La Marseillaise en 1792 ?",
-      "options": ["Victor Hugo", "Rouget de Lisle", "Jean-Jacques Rousseau", "Hector Berlioz"],
-      "answer_index": 1,
-      "explanation": "Claude Joseph Rouget de Lisle compose le « Chant de guerre pour l'armée du Rhin » à Strasbourg en 1792. Repris par les fédérés marseillais, il devient La Marseillaise.",
-      "category": "serieux"
-    },
-    {
-      "type": "qcm",
-      "question": "À un barbecue patriote, qui détient le monopole des pinces et du feu ?",
-      "options": ["Le plus jeune", "Le maître du barbecue (auto-proclamé)", "Un tirage au sort", "Tout le monde à tour de rôle"],
-      "answer_index": 1,
-      "explanation": "Le maître du barbecue : fonction non élective, non négociable et défendue avec une vigilance toute républicaine.",
-      "category": "humour"
-    },
-    {
-      "type": "qcm",
-      "question": "Combien de régions compte la France métropolitaine depuis la réforme de 2016 ?",
-      "options": ["13", "18", "22", "27"],
-      "answer_index": 0,
-      "explanation": "Depuis le 1er janvier 2016, la France métropolitaine compte 13 régions (contre 22 auparavant), à la suite de la réforme territoriale.",
-      "category": "serieux"
-    },
-    {
-      "type": "qcm",
-      "question": "Quelle est la meilleure cuisson pour une saucisse au barbecue ?",
-      "options": ["Pâle et triste", "Dorée à point", "Légèrement carbonisée (« c'est le goût »)", "Réponse libre — à débattre à table"],
-      "answer_index": 3,
-      "reponse_libre": true,
-      "explanation": "Il n'existe aucune bonne réponse officielle : sujet de discorde nationale. L'animateur tranche… ou laisse la table se déchirer.",
-      "category": "humour"
-    },
-    {
-      "type": "qcm",
-      "question": "En quelle année a été adoptée la Déclaration des droits de l'homme et du citoyen ?",
-      "options": ["1776", "1789", "1791", "1804"],
-      "answer_index": 1,
-      "explanation": "La Déclaration des droits de l'homme et du citoyen est adoptée le 26 août 1789 par l'Assemblée nationale constituante.",
-      "category": "serieux"
-    },
-    {
-      "type": "qcm",
-      "question": "Que répond traditionnellement un Français quand on lui demande « Ça va ? »",
-      "options": ["« Très bien, merci ! »", "« Bof, on fait aller »", "« Ça pourrait être pire »", "« Ne m'en parle pas »"],
-      "answer_index": 1,
-      "explanation": "L'enthousiasme modéré est une marque de bon goût national. Répondre « très bien » éveille toujours un léger soupçon.",
-      "category": "humour"
-    },
-    {
-      "type": "qcm",
-      "question": "Pour quel événement la Tour Eiffel a-t-elle été construite ?",
-      "options": ["L'Exposition universelle de 1889", "Les Jeux olympiques de 1900", "Le couronnement de Napoléon III", "L'Exposition coloniale de 1931"],
-      "answer_index": 0,
-      "explanation": "La Tour Eiffel est érigée pour l'Exposition universelle de 1889, qui célèbre le centenaire de la Révolution française.",
-      "category": "serieux"
-    },
-    {
-      "type": "qcm",
-      "question": "Quel animal est l'emblème officieux de la France ?",
-      "options": ["L'aigle", "Le coq gaulois", "Le lion", "Le sanglier"],
-      "answer_index": 1,
-      "explanation": "Le coq gaulois : le seul qui continue de chanter les deux pieds dans le fumier. L'aigle, lui, était l'emblème de l'Empire napoléonien.",
-      "category": "humour"
-    },
-    {
-      "type": "qcm",
-      "question": "Qui fut le premier président de la Ve République ?",
-      "options": ["Georges Pompidou", "Vincent Auriol", "Charles de Gaulle", "René Coty"],
-      "answer_index": 2,
-      "explanation": "Charles de Gaulle, élu en décembre 1958 et entré en fonction en janvier 1959. (Vincent Auriol et René Coty furent présidents sous la IVe République.)",
-      "category": "serieux"
-    },
-    {
-      "type": "qcm",
-      "question": "Le débat ultime : la chocolatine ou le pain au chocolat ?",
-      "options": ["Pain au chocolat", "Chocolatine", "Les deux, ne nous fâchons pas", "Réponse libre (et risquée)"],
-      "answer_index": 2,
-      "reponse_libre": true,
-      "explanation": "Question piège : aucune réponse ne fera l'unanimité à table. La paix civile recommande la neutralité diplomatique.",
-      "category": "humour"
-    },
-    {
-      "type": "qcm",
-      "question": "Quelle est la devise de la République française ?",
-      "options": ["Dieu et mon droit", "Liberté, Égalité, Fraternité", "Un pour tous, tous pour un", "Travail, Famille, Patrie"],
-      "answer_index": 1,
-      "explanation": "« Liberté, Égalité, Fraternité », devise héritée de la Révolution. (« Travail, Famille, Patrie » était la devise du régime de Vichy.)",
-      "category": "serieux"
-    },
-    {
-      "type": "qcm",
-      "question": "Combien de temps un Français supporte-t-il une file d'attente avant de soupirer bruyamment ?",
-      "options": ["10 secondes", "Moins d'une minute", "Cinq bonnes minutes", "Il ne soupire jamais"],
-      "answer_index": 1,
-      "explanation": "Le soupir en file d'attente est un réflexe patrimonial, transmis de génération en génération.",
-      "category": "humour"
-    },
-    {
-      "type": "qcm",
-      "question": "Quel est le plus long fleuve de France ?",
-      "options": ["La Seine", "La Garonne", "Le Rhône", "La Loire"],
-      "answer_index": 3,
-      "explanation": "La Loire, avec environ 1 006 km, est le plus long fleuve traversant uniquement la France.",
-      "category": "serieux"
-    },
-    {
-      "type": "qcm",
-      "question": "Quel plat déclenche les disputes familiales les plus féroces ?",
-      "options": ["La raclette en plein été", "Les pâtes au beurre", "La salade verte", "Le pain de mie"],
-      "answer_index": 0,
-      "explanation": "La raclette hors-saison divise les familles depuis des générations. La servir un 14 juillet relève du quasi-incident diplomatique.",
-      "category": "humour"
-    },
-    {
-      "type": "qcm",
-      "question": "Que représentent les trois couleurs du drapeau français ?",
-      "options": ["Le bleu et le rouge de Paris, le blanc du roi", "Les trois ordres : clergé, noblesse, tiers état", "Trois grandes régions historiques", "La terre, la mer et le ciel"],
-      "answer_index": 0,
-      "explanation": "Le bleu et le rouge sont les couleurs de Paris, le blanc la couleur royale. Leur union (1789-1790) symbolise la réconciliation du peuple et de la monarchie de l'époque.",
-      "category": "serieux"
-    },
-    {
-      "type": "qcm",
-      "question": "Quel est le meilleur accompagnement pour l'apéro de la fête nationale ?",
-      "options": ["Saucisson-cornichons", "Chips et cacahuètes", "Tapenade et olives", "Réponse libre — vote à main levée"],
-      "answer_index": 3,
-      "reponse_libre": true,
-      "explanation": "Démocratie directe recommandée : chacun défend son camp, l'animateur organise le vote à main levée (et goûte pour vérifier).",
-      "category": "humour"
-    },
-    {
-      "type": "charade",
-      "clues": [
-        "Mon premier n'est pas un « oui », c'est une négation : « ne… pas ».",
-        "Mon deuxième se mange blanc et accompagne volontiers le poulet.",
-        "Mon tout est la capitale de la France."
-      ],
-      "answer": "Paris",
-      "decomposition": "Pas + riz = Paris",
-      "difficulty": "facile",
-      "explanation": "« Pas » (la négation) + « riz » (la céréale) se prononcent comme « Paris ». La Ville Lumière, capitale depuis des siècles."
-    },
-    {
-      "type": "charade",
-      "clues": [
-        "Mon premier recouvre le matelas pour dormir au propre.",
-        "Mon deuxième recouvre tout ton corps de la tête aux pieds.",
-        "Mon tout est tricolore et flotte au fronton des mairies."
-      ],
-      "answer": "Drapeau",
-      "decomposition": "Drap + peau = Drapeau",
-      "difficulty": "facile",
-      "explanation": "« Drap » + « peau » donne « drapeau ». L'emblème national bleu-blanc-rouge, fixé par la Révolution."
-    },
-    {
-      "type": "charade",
-      "clues": [
-        "Mon premier est l'époux : le mari d'une femme.",
-        "Mon deuxième est un prénom féminin, celui de la mère de la Vierge.",
-        "Mon tout est le buste qui orne les mairies, allégorie de la République."
-      ],
-      "answer": "Marianne",
-      "decomposition": "Mari + Anne = Marianne",
-      "difficulty": "difficile",
-      "explanation": "« Mari » + « Anne » donne « Marianne », figure allégorique de la République française, présente dans toutes les mairies."
-    },
-    {
-      "type": "charade",
-      "clues": [
-        "Mon premier est l'animal emblème de la France, il chante au lever du jour.",
-        "Mon deuxième est l'outil à dents qui sert à peigner la laine.",
-        "Mon tout est l'insigne rond bleu-blanc-rouge porté les jours de fête."
-      ],
-      "answer": "Cocarde",
-      "decomposition": "Coq + carde = Cocarde",
-      "difficulty": "difficile",
-      "explanation": "« Coq » + « carde » se prononce comme « cocarde ». La cocarde tricolore est née en juillet 1789, symbole rassembleur de la Révolution."
-    },
-    {
-      "type": "charade",
-      "clues": [
-        "Mon premier, c'est ce que tu fais la nuit en dormant.",
-        "Mon deuxième est une voyelle bien ronde.",
-        "Mon troisième est le participe passé du verbe « lire ».",
-        "Mon quatrième est une colline de Jérusalem (et un mouvement du XIXe siècle).",
-        "Mon tout, en 1789, a renversé la monarchie en France."
-      ],
-      "answer": "Révolution",
-      "decomposition": "Rêve + o + lu + sion = Révolution",
-      "difficulty": "tres_difficile",
-      "explanation": "« Rêve » + « o » + « lu » + « sion » reconstitue « Révolution ». La Révolution française de 1789 a mis fin à l'Ancien Régime et fondé la République."
-    }
+    {"type":"qcm","gate":true,"question":"Avant de commencer… êtes-vous communiste ?","options":["OUI","NON"],"answer_index":1,"explanation":"Bonne réponse ! Vous êtes officiellement habilité(e) à participer au Quizz CPE. Les « OUI » sont priés d'aller s'occuper du charbon.","category":"humour"},
+    {"type":"qcm","question":"Quel est le gentilé des habitants de Breuillet ?","options":["Les Breuillois","Les Breuillenois","Les Breuilletois","Les Breuilletenois"],"answer_index":2,"explanation":"Les Breuilletois (et Breuilletoises).","category":"serieux"},
+    {"type":"qcm","question":"Dans le film Le Tatoué (1968), quel alcool français Legrain (Jean Gabin) préconise-t-il pour accompagner un civet de lièvre ?","options":["Le calvados","Le cidre","Le beaujolais","Le pastis"],"answer_index":2,"explanation":"Le beaujolais. Selon Legrain, il faut « un beaujolais qui a du corps, à température de la cave ».","category":"humour"},
+    {"type":"qcm","question":"Combien de sénateurs siègent au Sénat ?","options":["321","331","348","360"],"answer_index":2,"explanation":"348 sénateurs.","category":"serieux"},
+    {"type":"qcm","question":"Combien de membres nommés compte le Conseil constitutionnel ?","options":["7","9","11","12"],"answer_index":1,"explanation":"9 membres nommés (hors anciens présidents de la République, qui sont membres de droit).","category":"serieux"},
+    {"type":"qcm","question":"Selon Sandrine Rousseau, quel plat peut vous transformer en un infâme masculiniste ?","options":["La soupe au chou","La côte de bœuf","Le barbecue","La salade de quinoa"],"answer_index":2,"explanation":"Le barbecue. Référence à sa sortie de 2022 associant la viande grillée à un marqueur de virilité.","category":"humour"},
+    {"type":"qcm","question":"🧮 Calcul mental — Prenez l'année de la Ve République (1958), ajoutez le nombre de sénateurs (348), multipliez le tout par le nombre de députés (577), puis multipliez le résultat par le nombre de tours d'une élection présidentielle MOINS DEUX.","options":["1 130 414","0","2","18"],"answer_index":1,"explanation":"0. Le piège : « le nombre de tours d'une présidentielle MOINS DEUX » = 2 − 2 = 0. Tout est donc multiplié par zéro. Pendant que les invités se jettent sur 1958 + 348 × 577, la réponse est 0.","category":"humour"},
+    {"type":"qcm","question":"À qui attribue-t-on la fameuse phrase : « Il se croyait César, il n'est mort que Pompée » ?","options":["Félix Faure","Edgar Faure","Georges Clemenceau","Adolphe Thiers"],"answer_index":2,"explanation":"Georges Clemenceau. Le mot vise Félix Faure (mort en 1899 dans les bras de sa maîtresse) : c'est le piège, car Félix Faure est aussi dans la liste. La phrase est attribuée à Clemenceau, mais elle parle de Faure.","category":"humour"},
+    {"type":"qcm","question":"Combien de sœurs a Brigitte Macron ?","options":["2","3","4","5"],"answer_index":1,"explanation":"3 sœurs : Maryvonne, Anne-Marie et Monique (Brigitte est la benjamine d'une fratrie de six : 3 sœurs + 2 frères).","category":"humour"},
+    {"type":"qcm","question":"Parmi les inventions suivantes, laquelle N'EST PAS française ?","options":["Le kitesurf","Le pneu increvable","La TVA","Le croissant"],"answer_index":3,"explanation":"Le croissant, d'origine viennoise (le kipferl autrichien). Le kitesurf (frères Legaignoux) et la TVA (Maurice Lauré, 1954) sont bien français.","category":"serieux"},
+    {"type":"qcm","question":"Quel auteur célèbre a dit : « La tradition n'est pas la vénération des cendres mais la passation du feu » ?","options":["Marc Bloch","Gustav Mahler","Maurice Barrès","Louis Boyard"],"answer_index":1,"explanation":"Gustav Mahler (« Tradition ist nicht die Anbetung der Asche, sondern die Weitergabe des Feuers »).","category":"serieux"},
+    {"type":"charade","clues":["Mon premier, l'enfant capricieux le lance en tirant la langue.","Mon deuxième est un fleuve qui arrose Turin avant de filer vers l'Adriatique.","Mon troisième, en couture comme en tapisserie, désigne la largeur d'une bande d'étoffe ou de papier peint.","Mon quatrième est ce pronom bien commode quand on ne veut accuser personne.","Mon tout est un personnage illustre bien connu des Français."],"answer":"Napoléon","decomposition":"Na + Pô + lé + on = Napoléon","difficulty":"difficile","explanation":"« Na ! » (ce que lance l'enfant capricieux) + « Pô » (le fleuve italien) + « lé » (la largeur d'un lé de tissu) + « on » (le pronom) = Napoléon. Le « lé » est le vrai piège."},
+    {"type":"qcm","question":"🎬 Cinéma — Quel film français de 1985 a été adapté à Hollywood deux ans plus tard sous le titre Three Men and a Baby ?","options":["Les Compères","La Chèvre","Trois hommes et un couffin","Le Père Noël est une ordure"],"answer_index":2,"explanation":"Trois hommes et un couffin, de Coline Serreau (César du meilleur film 1986). Les trois autres sont de vraies comédies de la même époque.","category":"humour"},
+    {"type":"qcm","question":"Quel célèbre peintre, dont la maison se visite dans notre département, a peint le tableau utilisé comme illustration dans notre tract ?","options":["Gustave Caillebotte","Édouard Manet","Tsugouharu Foujita","Léonard de Vinci"],"answer_index":0,"explanation":"Gustave Caillebotte (Propriété Caillebotte à Yerres). À confirmer selon le tableau du tract : Foujita a aussi une maison-atelier visitable en Essonne (Villiers-le-Bâcle) ; si l'œuvre est de Foujita, la bonne réponse devient C.","category":"serieux"},
+    {"type":"qcm","question":"Dans quelle ville Claude François a-t-il établi sa résidence familiale ?","options":["Yerres","Dannemois","Le Plessis-Pâté","Chamarande"],"answer_index":1,"explanation":"Dannemois (le Moulin de Dannemois, en Essonne).","category":"humour"},
+    {"type":"qcm","question":"Selon le grand livre de cuisine d'Auguste Escoffier, combien de kg de jarret de veau faut-il pour obtenir 4 litres de fond brun ?","options":["2","4","8","16"],"answer_index":0,"explanation":"Environ 2 kg. Escoffier indique 6 kg de jarret de veau pour 10 litres de fond brun, soit ~2,4 kg pour 4 litres → arrondi à 2.","category":"serieux"},
+    {"type":"qcm","question":"Quel saint est le saint patron de la France ?","options":["Saint Michel","Saint Christophe","Saint Denis","Sainte Jeanne d'Arc"],"answer_index":0,"explanation":"Sujet à débat. Réponse « patriote » la plus courante : Saint Michel, protecteur historique de la France (Mont-Saint-Michel, voix de Jeanne d'Arc). Réponse « manuel » classique : Saint Denis, premier évêque de Paris. Officiellement, la patronne principale est la Vierge Marie (vœu de Louis XIII, 1638), Jeanne d'Arc étant patronne secondaire.","category":"serieux"},
+    {"type":"qcm","question":"Quelle est la musique d'introduction du Festival de Cannes (et la musique d'attente de la hotline CPE) ?","options":["Les Quatre Saisons, Vivaldi","Aquarium, Camille Saint-Saëns","La Mer, Debussy","Clair de lune, Chopin"],"answer_index":1,"explanation":"Aquarium, de Camille Saint-Saëns (Le Carnaval des animaux). Générique du Festival de Cannes depuis 1990.","category":"serieux"},
+    {"type":"qcm","question":"Quel est le premier président de la IIIe République ?","options":["Adolphe Thiers","Félix Faure","Patrice de Mac-Mahon","Raymond Poincaré"],"answer_index":0,"explanation":"Adolphe Thiers (1871). Mac-Mahon ne fut que le deuxième : c'est le piège.","category":"serieux"},
+    {"type":"qcm","question":"Quel est le dernier Français à avoir gagné le Tour de France ?","options":["Eddy Merckx","Raymond Poulidor","Bernard Hinault","Thomas Voeckler"],"answer_index":2,"explanation":"Bernard Hinault (1985), toujours le dernier vainqueur français à ce jour.","category":"serieux"},
+    {"type":"qcm","question":"Quelle pâtisserie ou confiserie du sud de la France fait partie des treize desserts de la tradition provençale de Noël ?","options":["Les macarons","Les financiers","Les calissons","La pâte d'amande"],"answer_index":2,"explanation":"Les calissons (calissons d'Aix).","category":"serieux"},
+    {"type":"qcm","question":"🎁 Question bonus — Quel illustre irréductible gaulois de l'Essonne résiste toujours à l'envahisseur du haut de ses 90 ans ?","options":["Vercingétorix","Claude","Astérix","Panoramix"],"answer_index":1,"explanation":"Clin d'œil local : réponse attendue Claude (l'intrus humain au milieu des Gaulois). À adapter selon l'inside joke de l'association.","category":"humour"}
   ]
 }
